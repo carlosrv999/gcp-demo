@@ -1,17 +1,27 @@
 # New App 2
 
-### Done:
+## Installation:
 
-Execute terraform apply
+### Prerequisites:
 
-Execute ansible-playbook install-docker.yaml
-Execute ansible-playbook install-java.yaml
-Execute ansible-playbook install-plugins.yaml
+- Terraform
+- Ansible
 
-### In progress:
+Clone this repository
+Save your credentials.json file inside this repo, on root folder.
 
-Create new Pipeline using the repo https://github.com/carlosrv999/java-sample.git, this will use this Shared Library: https://github.com/carlosrv999/java-shared-library.git. This is already tested and works, final step deploy to GKE. Still not included in the automated deployment of jenkins with Ansible.
+Edit terraform.tfvars acoording your project
+
+### Deploy:
+
+sh deploy.sh
+
+### After steps:
+
+Navigate to <Public IP>:8080 of Jenkins Instance **(terraform output public_ip)**
+
+Create Kubeconfig credentials following this guide https://plugins.jenkins.io/kubernetes-cd/
+
+Create new Pipeline using the repo https://github.com/carlosrv999/java-sample.git.
 
 Execute Build of Pipeline.
-
-
