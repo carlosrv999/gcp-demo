@@ -1,0 +1,144 @@
+---
+- name: Install Java
+  gather_facts: No
+  hosts: all
+
+  tasks:
+    - name: Install Ant plugin
+      jenkins_plugin:
+        name: ant
+        url: http://localhost:8080
+      become: true
+
+    - name: Install kubernetes-cd
+      jenkins_plugin:
+        name: kubernetes-cd
+        url: http://localhost:8080
+      become: true
+
+    - name: Install bouncycastle-api
+      jenkins_plugin:
+        name: bouncycastle-api
+        url: http://localhost:8080
+      become: true
+      
+    - name: Install build-timeout
+      jenkins_plugin:
+        name: build-timeout
+        url: http://localhost:8080
+      become: true
+
+    - name: Install command-launcher
+      jenkins_plugin:
+        name: command-launcher
+        url: http://localhost:8080
+      become: true
+
+    - name: Install github-branch-source
+      jenkins_plugin:
+        name: github-branch-source
+        url: http://localhost:8080
+      become: true
+
+    - name: Install google-container-registry-auth
+      jenkins_plugin:
+        name: google-container-registry-auth
+        url: http://localhost:8080
+      become: true
+
+    - name: Install google-oauth-plugin
+      jenkins_plugin:
+        name: google-oauth-plugin
+        url: http://localhost:8080
+      become: true
+
+    - name: Install junit
+      jenkins_plugin:
+        name: junit
+        url: http://localhost:8080
+      become: true
+
+    - name: Install ldap
+      jenkins_plugin:
+        name: ldap
+        url: http://localhost:8080
+      become: true
+
+    - name: Install workflow-aggregator
+      jenkins_plugin:
+        name: workflow-aggregator
+        url: http://localhost:8080
+      become: true
+
+    - name: Install pipeline-github-lib
+      jenkins_plugin:
+        name: pipeline-github-lib
+        url: http://localhost:8080
+      become: true
+
+    - name: Install ssh-slaves
+      jenkins_plugin:
+        name: ssh-slaves
+        url: http://localhost:8080
+      become: true
+
+    - name: Install subversion
+      jenkins_plugin:
+        name: subversion
+        url: http://localhost:8080
+      become: true
+
+    - name: Install timestamper
+      jenkins_plugin:
+        name: timestamper
+        url: http://localhost:8080
+      become: true
+
+    - name: Install ws-cleanup
+      jenkins_plugin:
+        name: ws-cleanup
+        url: http://localhost:8080
+      become: true
+
+    - name: Install docker-workflow
+      jenkins_plugin:
+        name: docker-workflow
+        url: http://localhost:8080
+      become: true
+
+    - name: Install apache-httpcomponents-client-4-api
+      jenkins_plugin:
+        name: apache-httpcomponents-client-4-api
+        url: http://localhost:8080
+      become: true
+
+    - name: Install oauth-credentials
+      jenkins_plugin:
+        name: oauth-credentials
+        url: http://localhost:8080
+      become: true
+
+    - name: Install workflow-cps-global-lib
+      jenkins_plugin:
+        name: workflow-cps-global-lib
+        url: http://localhost:8080
+      become: true
+
+    - name: Install credentials
+      jenkins_plugin:
+        name: credentials
+        url: http://localhost:8080
+      become: true
+
+    - name: Restart Jenkins to make available
+      service: name=jenkins state=restarted
+      become: true
+
+    - name: wait for Jenkins to come up
+      uri:
+        url: "http://127.0.0.1:8080/"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 60
+      delay: 1

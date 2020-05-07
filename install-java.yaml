@@ -1,0 +1,96 @@
+---
+- name: Install Java
+  gather_facts: No
+  hosts: all
+
+  tasks:
+    - name: Install Java
+      yum:
+        name: java-1.8.0-openjdk-devel
+        state: latest
+      become: yes
+
+    - name: Add JAVA_HOME
+      lineinfile: dest=/root/.bashrc line='export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64' insertafter='EOF' state=present
+      become: yes
+
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+      become: yes
+
+    - name: Source the .bashrc file
+      shell: source /root/.bashrc
+      become: yes
+
+    - name: Download Maven
+      get_url: url=http://apache.claz.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz dest=/tmp/apache-maven-3.6.3-bin.tar.gz
+      become: yes
+
+    - name: Untar Maven
+      unarchive: 
+        src: /tmp/apache-maven-3.6.3-bin.tar.gz
+        dest: /opt/
+        remote_src: yes
+      become: yes
+
+    - name: Add Maven to PATH
+      lineinfile: dest=/root/.bashrc line='export PATH=/opt/apache-maven-3.6.3/bin:$PATH' insertafter='EOF' state=present
+      become: yes
+
+    - name: Source the .bashrc file
+      shell: source /root/.bashrc
+      become: yes
+
+    - name: Download Jenkins repo yum URL for  
+      get_url:
+        url: "https://pkg.jenkins.io/redhat/jenkins.repo"
+        dest: /etc/yum.repos.d/jenkins.repo
+      become: yes
+
+    - name: Import GPG Key
+      rpm_key:
+        state: present
+        key: "https://pkg.jenkins.io/redhat/jenkins.io.key"
+      become: yes
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: present
+      become: yes
+
+    - name: Add Jenkins user to docker group
+      user:
+        name: jenkins
+        groups: docker
+      become: yes
+
+    - name: Change Jenkins JAVA options
+      lineinfile:
+        dest=/etc/sysconfig/jenkins
+        regexp=^JENKINS_JAVA_OPTIONS=
+        line=JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true"
+      become: yes
+
+    - name: Add maven conf file
+      template: src=maven_home.xml
+                dest=/var/lib/jenkins/hudson.tasks.Maven.xml
+      become: yes
+
+    - name: Create MAven configuration file
+      file: path=/var/lib/jenkins/hudson.tasks.Maven.xml
+            state=file
+            owner=jenkins
+            group=jenkins
+            mode=0644
+      become: yes
+
+    - name: Start Jenkins service and enable on boot
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+      become: yes
+

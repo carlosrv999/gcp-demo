@@ -1,0 +1,5 @@
+region="us-west1"
+zone="us-west1-a"
+project="testproject-276315"
+gce_ssh_user="linux"
+gce_ssh_pub_key_file="~/.ssh/newkey-demo-01.pub"
