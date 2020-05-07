@@ -1,1 +1,0 @@
-EMAIL="carlos@testproject-276315.iam.gserviceaccount.com"
