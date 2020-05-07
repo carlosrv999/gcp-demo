@@ -8,6 +8,7 @@ This app deploys Jenkins with Ansible in a GCP instance, and the Jenkins inside 
 
 - Terraform
 - Ansible
+- Google Cloud SDK (gcloud command-line tool)
 
 Clone this repository
 Save your credentials.json file inside this repo, on root folder.
@@ -23,7 +24,7 @@ sh deploy.sh
 Navigate to <Public IP>:8080 of Jenkins Instance **(terraform output public_ip)**
 
 Create Global Credentials following this guide: https://cloud.google.com/container-registry/docs/advanced-authentication#json-key (The user is _json_key)
-Create Kubeconfig credentials following this guide https://plugins.jenkins.io/kubernetes-cd/
+Create Kubeconfig credentials following this guide https://plugins.jenkins.io/kubernetes-cd/. You can obtain the Kubeconfig file with the following command gcloud container clusters get-credentials $(terraform output cluster_name). It is saved to ~/.kube.config
 
 Create new Pipeline using the repo https://github.com/carlosrv999/java-sample.git.
 
