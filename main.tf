@@ -77,3 +77,7 @@ output "cluster_name" {
 output "location" {
   value = google_container_cluster.primary.location
 }
+
+output "public_ip" {
+  value = google_compute_instance.default.network_interface[0].access_config[0].nat_ip
+}
